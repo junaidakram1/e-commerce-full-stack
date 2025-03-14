@@ -1,0 +1,16 @@
+# Ignore environment variables
+.env
+api/.env
+admin/.env
+client/.env
+
+# Ignore node_modules
+node_modules/
+admin/node_modules/
+client/node_modules/
+api/node_modules/
+
+# Ignore build and logs
+dist/
+build/
+*.log
