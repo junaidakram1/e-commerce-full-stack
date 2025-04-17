@@ -4,6 +4,7 @@ import { mobile } from "../responsive";
 import { login } from "../redux/apiCalls";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -71,7 +72,7 @@ const Button = styled.button`
   }
 `;
 
-const Link = styled.a`
+const Links = styled.a`
   margin: 5px 0px;
   ${mobile({ margin: "7px" })}
   font-size: 12px;
@@ -84,14 +85,14 @@ const Error = styled.div`
 `;
 
 const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const { isFetching, error } = useSelector((state) => state.user);
 
   const handleClick = (e) => {
     e.preventDefault();
-    login(dispatch, { username, password });
+    login(dispatch, { email, password });
   };
 
   return (
@@ -102,7 +103,7 @@ const Login = () => {
         <Form>
           <Input
             placeholder="username"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <Input
             placeholder="password"
@@ -113,8 +114,10 @@ const Login = () => {
             LOGIN
           </Button>
           {error && <Error>Something went wrong!</Error>}
-          <Link>DO NOT YOU REMEMBER THE PASSWORD?</Link>
-          <Link>CREATE A NEW ACCOUNT</Link>
+          <Links>DO NOT YOU REMEMBER THE PASSWORD?</Links>
+          <Links>
+            <Link to="/register">CREATE A NEW ACCOUNT</Link>
+          </Links>
         </Form>
       </Wrapper>
     </Container>

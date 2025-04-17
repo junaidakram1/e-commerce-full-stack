@@ -9,6 +9,9 @@ import { createGlobalStyle } from "styled-components";
 import { mobile } from "../responsive";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { logout } from "../redux/userRedux";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -72,18 +75,39 @@ const StyledInput = styled(InputBase)`
 
 const Logo = styled.h1`
   font-weight: bold;
+  color: black;
+  text-decoration: none;
   ${mobile({ fontSize: "24px" })}
+`;
+
+const LogoLink = styled(Link)`
+  text-decoration: none; // Removes underline from the link
 `;
 
 const MenuItem = styled.div`
   font-size: 14px;
   cursor: pointer;
   margin-left: 25px;
+
+  &:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+  }
+
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 
 const Navbar = () => {
   const quantity = useSelector((state) => state.cart.quantity);
+  const user = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
+
   return (
     <Container>
       <GlobalStyle />
@@ -96,11 +120,22 @@ const Navbar = () => {
           </SearchContainer>
         </Left>
         <Center>
-          <Logo>DOME.</Logo>
+          <LogoLink to="/">
+            <Logo>DOME.</Logo>
+          </LogoLink>
         </Center>
         <Right>
-          <MenuItem>REGISTER</MenuItem>
-          <MenuItem>SIGN IN</MenuItem>
+          {!user && (
+            <>
+              <Link to="/register">
+                <MenuItem>REGISTER</MenuItem>
+              </Link>
+              <Link to="/login">
+                <MenuItem>SIGN IN</MenuItem>
+              </Link>
+            </>
+          )}
+          {user && <MenuItem onClick={handleLogout}>LOGOUT</MenuItem>}
           <Link to="/cart">
             <MenuItem>
               <Badge badgeContent={quantity} color="primary">

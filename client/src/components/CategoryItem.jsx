@@ -8,6 +8,31 @@ const Container = styled.div`
   margin: 3px;
   height: 70vh;
   position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+
+  transition: all 0.3s ease; /* Smooth transition for transform and box-shadow */
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.2); /* Light shadow overlay */
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  &:hover::after {
+    opacity: 0; /* Hide overlay on hover */
+  }
+
+  &:hover {
+    transform: scale(1.01); /* Slight zoom-in effect */
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+  }
 `;
 
 const Image = styled.img`
@@ -34,15 +59,42 @@ const Info = styled.div`
 const Title = styled.h1`
   color: white;
   margin-bottom: 20px;
+  z-index: 1000;
 `;
 
 const Button = styled.button`
-  border: none;
-  padding: 10px;
+  border: 2px solid transparent;
+  padding: 10px 20px;
   background-color: white;
   color: gray;
   cursor: pointer;
+  /* border: 0.5 solid black; */
   font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+
+  &::before {
+    content: "";
+    position: absolute;
+    background: teal;
+    height: 100%;
+    width: 0;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    transition: all 0.3s ease;
+  }
+
+  &:hover {
+    color: white;
+    border-color: teal;
+  }
+
+  &:hover::before {
+    width: 100%;
+  }
 `;
 
 const CategoryItem = ({ item }) => {

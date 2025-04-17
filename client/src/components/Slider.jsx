@@ -80,7 +80,34 @@ const Button = styled.button`
   padding: 10px;
   font-size: 20px;
   background-color: transparent;
+  color: black;
   cursor: pointer;
+  border: 2px solid black;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  z-index: 1;
+
+  &::before {
+    content: "";
+    position: absolute;
+    background: teal;
+    height: 100%;
+    width: 0;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    transition: all 0.3s ease;
+  }
+
+  &:hover {
+    color: white;
+    border-color: teal;
+  }
+
+  &:hover::before {
+    width: 100%;
+  }
 `;
 
 const Slider = () => {
@@ -107,7 +134,7 @@ const Slider = () => {
             <InfoContainer>
               <Title>{item.title}</Title>
               <Desc>{item.desc}</Desc>
-              <Button>SHOW NOW</Button>
+              <Button>SHOP NOW</Button>
             </InfoContainer>
           </Slide>
         ))}

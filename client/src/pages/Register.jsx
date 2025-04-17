@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { createGlobalStyle } from "styled-components";
 import { mobile } from "../responsive";
+import axios from "axios";
+import { useState } from "react";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -67,25 +70,73 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const LoginLink = styled.p`
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+`;
+
 const Register = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/register", {
+        username,
+        email,
+        password,
+      });
+      console.log("User created successfully:", res.data);
+    } catch (err) {
+      console.log("Error during registration:", err.response?.data || err);
+    }
+  };
   return (
     <Container>
       <GlobalStyle />
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
-        <Form>
-          <Input placeholder="First Name" />
-          <Input placeholder="Last Name" />
-          <Input placeholder="Username" />
-          <Input placeholder="Email" />
-          <Input placeholder="Password" />
-          <Input placeholder="Confirm Password" />
+        <Form onSubmit={handleSubmit}>
+          <Input
+            placeholder="Full Name"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Input
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            placeholder="Password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Input
+            placeholder="Confirm Password"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
           <Agreement>
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>
           </Agreement>
-          <Button>CREATE</Button>
+          <Button type="Submit">CREATE</Button>
         </Form>
+        <LoginLink>
+          Already have an account? <Link to="/login">Login here</Link>
+        </LoginLink>
       </Wrapper>
     </Container>
   );
